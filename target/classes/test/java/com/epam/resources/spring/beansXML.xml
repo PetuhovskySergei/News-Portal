@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id="connectionAccess" class="project.java.dao.ConnectionAccess">
+       <property name="DB_URL" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+   </bean>
+
+	<bean id="authorDAO" class="project.java.dao.AuthorDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="commentDAO" class="project.java.dao.CommentDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="newsDAO" class="project.java.dao.NewsDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="tagDAO" class="project.java.dao.TagDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+
+</beans>

@@ -1,4 +1,4 @@
-package test.java.test.java;
+package test.java.com.epam.project;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import project.java.dao.AuthorDAO;
-import project.java.entity.Author;
+
 
 public class AddAuthorTest {
 

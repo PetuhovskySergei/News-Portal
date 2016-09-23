@@ -1,4 +1,4 @@
-package com.epam.project.dao;
+package com.epam.project.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +10,13 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.epam.project.dao.INewsDAO;
 import com.epam.project.entity.Comment;
 import com.epam.project.entity.News;
 
 
 
-public class NewsDAO {
+public class NewsDAO implements INewsDAO {
 	
 private DataSource dataSource;
 	

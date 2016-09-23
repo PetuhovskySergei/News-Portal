@@ -1,4 +1,4 @@
-package com.epam.project.dao;
+package com.epam.project.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +10,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.epam.project.dao.ICommentDAO;
 import com.epam.project.entity.Author;
 import com.epam.project.entity.Comment;
 
-public class CommentDAO {
+public class CommentDAO implements ICommentDAO {
 		
 	private DataSource dataSource;
 	

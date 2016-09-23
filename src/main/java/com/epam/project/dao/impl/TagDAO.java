@@ -1,4 +1,4 @@
-package com.epam.project.dao;
+package com.epam.project.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +10,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.epam.project.dao.ITagDAO;
 import com.epam.project.entity.Tag;
 
-public class TagDAO {
+public class TagDAO implements ITagDAO{
 	
 private DataSource dataSource;
 	

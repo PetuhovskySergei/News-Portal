@@ -1,4 +1,4 @@
-package com.epam.project.dao;
+package com.epam.project.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,10 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import com.epam.project.dao.IAuthorDAO;
 import com.epam.project.entity.Author;
 
-public class AuthorDAO {
+public class AuthorDAO implements IAuthorDAO{
 	
 	private DataSource dataSource;
 	

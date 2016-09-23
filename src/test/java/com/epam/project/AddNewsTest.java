@@ -1,4 +1,4 @@
-package test.java.test.java;
+package test.java.com.epam.project;
 
 import static org.junit.Assert.*;
 
@@ -9,8 +9,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import project.java.dao.NewsDAO;
-import project.java.entity.News;
+import com.epam.project.dao.impl.NewsDAO;
+import com.epam.project.entity.News;
+
 
 public class AddNewsTest {
 	
@@ -64,10 +65,10 @@ public class AddNewsTest {
 	}
 	
 	@Test
-	public void addDateOfPublishingTest() {
+	public void addPublishDateTest() {
 		News news = new News();
 		Date d = new Date(11-11-11);
-		news.setDateOfPublishing(new Date(11-11-11));
+		news.setPublishDate(new Date(11-11-11));
 		try{
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/BeansXML.xml");
@@ -76,7 +77,7 @@ public class AddNewsTest {
 			}catch(Exception e){
 				logger.error(e);
 			}
-		assertEquals(d, news.getDateOfPublishing());
+		assertEquals(d, news.getPublishDate());
 	}
 }	
 	

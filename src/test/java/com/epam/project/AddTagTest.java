@@ -1,4 +1,4 @@
-package test.java.test.java;
+package test.java.com.epam.project;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import project.java.dao.TagDAO;
-import project.java.entity.Tag;
+import com.epam.project.dao.impl.TagDAO;
+import com.epam.project.entity.Tag;
+
 
 public class AddTagTest {
 	

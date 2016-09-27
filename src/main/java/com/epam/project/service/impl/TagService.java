@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.epam.project.dao.exception.DAOException;
 import com.epam.project.dao.impl.TagDAO;
-import com.epam.project.entity.News;
 import com.epam.project.entity.Tag;
 import com.epam.project.service.ITagService;
 import com.epam.project.service.exception.ServiceException;
 
 public class TagService implements ITagService {
 	
-	TagDAO tagDAO;
+	private TagDAO tagDAO;
 
 	@Override
 	public long insert(Tag tag) throws ServiceException {

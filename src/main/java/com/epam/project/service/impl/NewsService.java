@@ -11,7 +11,7 @@ import com.epam.project.service.exception.ServiceException;
 
 public class NewsService implements INewsService {
 
-	NewsDAO newsDAO;
+	private NewsDAO newsDAO;
 	
 	@Override
 	public long insert(News news) throws ServiceException {

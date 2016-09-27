@@ -41,12 +41,13 @@ public class CommentDAO implements ICommentDAO {
 	
 
 	public Comment show(long commentId) throws DAOException {
-		 
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		Comment comment = null;		
-			try(
-				Connection connect = dataSource.getConnection();	
-				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_COMMENT)){			
+			try{
+				connect = dataSource.getConnection();	
+				preparedStatement = connect.prepareStatement(SHOW_COMMENT);			
 						preparedStatement.setLong(1, commentId);
 						rs = preparedStatement.executeQuery();			
 					if(rs.next()){
@@ -58,111 +59,159 @@ public class CommentDAO implements ICommentDAO {
 			} catch (SQLException e) {
 				throw new DAOException(e); 
 			} finally {
-				close(rs);
+				closeResultSet(rs);
+				closeConnection(connect);
+				closeStatement(preparedStatement);
 			}
 			return comment;
 	}
 	
 	
 	public long insert(Comment comment) throws DAOException{	
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		long commentId = 0;
-		try(
-		Connection connect = dataSource.getConnection();
-		PreparedStatement preparedStatement = connect.prepareStatement(INSERT_COMMENT, Statement.RETURN_GENERATED_KEYS);
-		Statement statement = connect.createStatement()){
-		
-	          preparedStatement.setString(1, comment.getCommentText());
-	          preparedStatement.setDate(2, comment.getCommentDate());
-	          preparedStatement.executeUpdate();
-	          
-	          rs = preparedStatement.getGeneratedKeys();
-	          if (rs.next())
-	        	  commentId = rs.getLong(1);
+			try{
+				connect = dataSource.getConnection();
+				preparedStatement = connect.prepareStatement(INSERT_COMMENT, Statement.RETURN_GENERATED_KEYS);
+			    preparedStatement.setString(1, comment.getCommentText());
+			    preparedStatement.setDate(2, comment.getCommentDate());
+			    preparedStatement.executeUpdate();      
+		          rs = preparedStatement.getGeneratedKeys();
+		          if (rs.next())
+		        	  commentId = rs.getLong(1);
 		} catch(SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			close(rs);
+			closeResultSet(rs);
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	          return commentId;
 	}
 	
 	
 	public List<Comment> list() throws DAOException { 
+		 Connection connect = null;
+  		 ResultSet rs = null;
+  		 Statement statement = null;
 		 List<Comment> result = new ArrayList<Comment>();
 		 Comment comment = null;
-		 try(
-		 Connection connect = dataSource.getConnection();	
-		 Statement statement = connect.createStatement();
-		 ResultSet rs = statement.executeQuery(LIST_COMMENT)){
-		 	while(rs.next()){
-		 		comment = new Comment();
-		 		comment.setCommentId(rs.getLong("COMMENT_ID"));
-		 		comment.setCommentText(rs.getString("COMMENT_TEXT"));
-		 		comment.setCommentDate(rs.getDate("COMMENT_DATE"));
-		 			result.add(comment);
-		 					}
+		 try{
+			 connect = dataSource.getConnection();	
+			 statement = connect.createStatement();
+			 rs = statement.executeQuery(LIST_COMMENT);
+			 	while(rs.next()){
+			 		comment = new Comment();
+			 		comment.setCommentId(rs.getLong("COMMENT_ID"));
+			 		comment.setCommentText(rs.getString("COMMENT_TEXT"));
+			 		comment.setCommentDate(rs.getDate("COMMENT_DATE"));
+			 			result.add(comment);
+			 					}
 		}catch(SQLException e){
 			throw new DAOException(e);
+		} finally {
+			closeResultSet(rs);
+			closeConnection(connect);
+			closeStatement(statement);
 		}
 		return result;
 	}
 	
 	
 	public void delete(Long commentId) throws DAOException {
-
-		try(
-		Connection connect = dataSource.getConnection();
-		PreparedStatement preparedStatement = connect.prepareStatement(DELETE_COMMENT)){
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+		try{
+		connect = dataSource.getConnection();
+		preparedStatement = connect.prepareStatement(DELETE_COMMENT);
 				preparedStatement.setLong(1, commentId);
 				preparedStatement.executeUpdate();
 		}catch (SQLException e) {
 			throw new DAOException(e);
+		} finally {
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}	
 	}
 	
 	
-	public void update(Comment comment) throws DAOException{	 
-		try(
-		Connection connect = dataSource.getConnection();	
-		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_COMMENT)){ 
-		 	  preparedStatement.setString(1, comment.getCommentText());
-		 	  preparedStatement.setDate(2, comment.getCommentDate());
-	          preparedStatement.setLong(3, comment.getCommentId());
-	          preparedStatement.executeUpdate();
+	public void update(Comment comment) throws DAOException{
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+			try{
+				connect = dataSource.getConnection();	
+				preparedStatement = connect.prepareStatement(UPDATE_COMMENT); 
+			 	  preparedStatement.setString(1, comment.getCommentText());
+			 	  preparedStatement.setDate(2, comment.getCommentDate());
+		          preparedStatement.setLong(3, comment.getCommentId());
+		          preparedStatement.executeUpdate();
 		}catch(SQLException e){
 			throw new DAOException(e);
+		} finally {
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	}
 	
 	
 	public int getCountComment() throws DAOException {
+		Connection connect = null;
+ 		ResultSet rs = null;
+ 		PreparedStatement preparedStatement = null;
 		List<Comment> result = null;
 		int countComment = 0;
-		try(
-			Connection connect = dataSource.getConnection();	
-			PreparedStatement  preparedStatement = connect.prepareStatement(COUNT_COMMENT)){
-			ResultSet rs = preparedStatement.executeQuery();
-		 
-			result = new ArrayList<Comment>(); 
+		try{
+			connect = dataSource.getConnection();	
+			preparedStatement = connect.prepareStatement(COUNT_COMMENT);
+				rs = preparedStatement.executeQuery();
+				result = new ArrayList<Comment>(); 
 			 	if(rs.next()){
 			 		countComment = (rs.getInt("total"));
 			 	}
 				}catch(SQLException e){
 					throw new DAOException(e);
+				} finally {
+					closeResultSet(rs);
+					closeConnection(connect);
+					closeStatement(preparedStatement);
 				}
 			return countComment;
 	}
 	
 	
-	private void close(ResultSet rs) throws DAOException{
+	private void closeResultSet(ResultSet rs) throws DAOException{
 			
 			if(rs != null){
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					throw new DAOException(e);
+					throw new DAOException("Could not close ResultSet",e);
 				}
+		}
+	}
+	
+	private void closeConnection(Connection connect) throws DAOException{
+		if (connect != null) {
+			try {
+				connect.close();
+			}
+			catch (SQLException e) {
+				throw new DAOException("Could not close Connection", e);
 			}
 		}
+	}
+	
+	public void closeStatement(Statement statement) throws DAOException {
+		if (statement != null) {
+			try {
+				statement.close();
+			}
+			catch (SQLException e) {
+				throw new DAOException("Could not close Statement", e);
+			}
+			
+		}
+	}
 }

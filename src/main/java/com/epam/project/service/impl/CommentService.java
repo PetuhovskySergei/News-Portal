@@ -10,7 +10,7 @@ import com.epam.project.service.exception.ServiceException;
 
 public class CommentService implements ICommentService {
 	
-	CommentDAO commentDAO;
+	private CommentDAO commentDAO;
 	
 	@Override
 	public long insert(Comment comment) throws ServiceException {

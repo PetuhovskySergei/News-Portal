@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="authorDAO" class="com.epam.project.dao.impl.AuthorDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="commentDAO" class="com.epam.project.dao.impl.CommentDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="newsDAO" class="com.epam.project.dao.impl.NewsDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+   
+   <bean id="tagDAO" class="com.epam.project.dao.impl.TagDAO">
+       <property name="connectionAccess" ref="connectionAccess"/>
+   </bean>
+
+</beans>

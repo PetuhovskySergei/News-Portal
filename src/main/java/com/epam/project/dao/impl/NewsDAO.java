@@ -63,12 +63,15 @@ private DataSource dataSource;
 
 	
 	public List<News> list() throws DAOException { 
+		 Connection connect = null;
+ 		 ResultSet rs = null;
+ 		 Statement statement = null;
 		 News news = null;
 		 List<News> result = new ArrayList<News>();
-		 try(
-		 Connection connect = dataSource.getConnection();	
-		 Statement statement = connect.createStatement();
-		 ResultSet rs = statement.executeQuery(LIST_NEWS)){
+		 try{
+			 connect = dataSource.getConnection();	
+			 statement = connect.createStatement();
+			 rs = statement.executeQuery(LIST_NEWS);
 		 	while(rs.next()){
 		 		news = new News();
 		 		news.setNewsId(rs.getLong("NEWS_ID"));
@@ -80,46 +83,52 @@ private DataSource dataSource;
 		 					}
 		}catch(SQLException e){
 			throw new DAOException(e);
+		} finally {
+			closeResultSet(rs);
+			closeConnection(connect);
+			closeStatement(statement);
 		}
 		return result;
 	}
 	
 	
 	public News show(long newsId) throws DAOException {
-		 
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		News news = null;		
-			try(
-				Connection connect = dataSource.getConnection();	
-				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_NEWS)){
-				
-				preparedStatement.setLong(1, newsId);
-				rs = preparedStatement.executeQuery();			
-					if(rs.next()){
-						news = new News();
-						news.setNewsId(rs.getLong("NEWS_ID"));
-						news.setMainTitle(rs.getString("MAIN_TITLE"));
-						news.setShortTitle(rs.getString("SHORT_TITLE"));
-						news.setText(rs.getString("TEXT"));
-						news.setPublishDate(rs.getDate("PUBLISH_DATE"));
+			try{
+				connect = dataSource.getConnection();	
+				preparedStatement = connect.prepareStatement(SHOW_NEWS);
+					preparedStatement.setLong(1, newsId);
+					rs = preparedStatement.executeQuery();			
+						if(rs.next()){
+							news = new News();
+							news.setNewsId(rs.getLong("NEWS_ID"));
+							news.setMainTitle(rs.getString("MAIN_TITLE"));
+							news.setShortTitle(rs.getString("SHORT_TITLE"));
+							news.setText(rs.getString("TEXT"));
+							news.setPublishDate(rs.getDate("PUBLISH_DATE"));
 					}
 			} catch (SQLException e) {
 				throw new DAOException(e);
 			}finally {
-				close(rs);
+				closeResultSet(rs);
+				closeConnection(connect);
+				closeStatement(preparedStatement);
 			}
 			return news;
 	}
 	
 	
 	public long insert(News news) throws DAOException{	 
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
 		ResultSet rs = null;
 		long newsId = 0;
-		try(
-		Connection connect = dataSource.getConnection();
-		PreparedStatement preparedStatement = connect.prepareStatement(INSERT_NEWS, Statement.RETURN_GENERATED_KEYS);
-		Statement statement = connect.createStatement()){
-		
+		try{
+			connect = dataSource.getConnection();
+			preparedStatement = connect.prepareStatement(INSERT_NEWS, Statement.RETURN_GENERATED_KEYS);
 	          preparedStatement.setString(1, news.getMainTitle());
 	          preparedStatement.setString(2, news.getShortTitle());
 	          preparedStatement.setString(3, news.getText());
@@ -132,30 +141,37 @@ private DataSource dataSource;
 		} catch(SQLException e) {
 			throw new DAOException(e);
 		} finally {
-			close(rs);
+			closeResultSet(rs);
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	          return newsId;
 	}
 	
 	
 	public void delete(Long newsId) throws DAOException {
-
-		try(
-		Connection connect = dataSource.getConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(DELETE_NEWS)){
-				preparedStatement.setLong(1, newsId);
-				preparedStatement.executeUpdate();
-		}catch (SQLException e) {
-			throw new DAOException(e);
-		}	
-	}
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+			try{
+				connect = dataSource.getConnection();
+					preparedStatement = connect.prepareStatement(DELETE_NEWS);
+					preparedStatement.setLong(1, newsId);
+					preparedStatement.executeUpdate();
+			}catch (SQLException e) {
+				throw new DAOException(e);
+			} finally {
+				closeConnection(connect);
+				closeStatement(preparedStatement);
+			}		
+		}
 	
 	
-	public void update(News news) throws DAOException{	 
-		try(
-		Connection connect = dataSource.getConnection();	
-		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_NEWS)){ 
-		
+	public void update(News news) throws DAOException{	
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+		try{
+		connect = dataSource.getConnection();	
+		preparedStatement = connect.prepareStatement(UPDATE_NEWS); 
 		 	  preparedStatement.setString(1, news.getMainTitle());
 		 	  preparedStatement.setString(2, news.getShortTitle());
 		 	  preparedStatement.setString(3, news.getText());
@@ -164,65 +180,108 @@ private DataSource dataSource;
 	          preparedStatement.executeUpdate();
 		}catch(SQLException e){
 			throw new DAOException(e);
+		} finally {
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	}
 	
 	
 	public int getCountNews() throws DAOException {
+		Connection connect = null;
+ 		ResultSet rs = null;
+ 		PreparedStatement preparedStatement = null;
 		List<News> result = null;
 		int countNews = 0;
-		try(
-			Connection connect = dataSource.getConnection();	
-			PreparedStatement  preparedStatement = connect.prepareStatement(COUNT_NEWS)){
-			ResultSet rs = preparedStatement.executeQuery();
+		try{
+			connect = dataSource.getConnection();	
+			preparedStatement = connect.prepareStatement(COUNT_NEWS);
+			rs = preparedStatement.executeQuery();
 		 
 			result = new ArrayList<News>(); 
 			 	if(rs.next()){
 			 		countNews = (rs.getInt("total"));
 			 	}
-				}catch(SQLException e){
+				} catch(SQLException e){
 					throw new DAOException(e);
+				} finally {
+					closeResultSet(rs);
+					closeConnection(connect);
+					closeStatement(preparedStatement);
 				}
 			return countNews;
 	}
 	
 	
-	private void close(ResultSet rs) throws DAOException{
+	private void closeResultSet(ResultSet rs) throws DAOException{
 		
 		if(rs != null){
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				throw new DAOException(e);
+				throw new DAOException("Could not close ResultSet",e);
 			}
+		}
+	}
+	
+	private void closeConnection(Connection connect) throws DAOException{
+		if (connect != null) {
+			try {
+				connect.close();
+			}
+			catch (SQLException e) {
+				throw new DAOException("Could not close Connection", e);
+			}
+		}
+	}
+	
+	public void closeStatement(Statement statement) throws DAOException {
+		if (statement != null) {
+			try {
+				statement.close();
+			}
+			catch (SQLException e) {
+				throw new DAOException("Could not close Statement", e);
+			}
+			
 		}
 	}
 
 
 	@Override
 	public void addAuthor(Long authorId, Long newsId) throws DAOException {
-		
-		try(Connection connect = dataSource.getConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(ADD_AUTHOR)){
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+		try{
+			connect = dataSource.getConnection();
+			preparedStatement = connect.prepareStatement(ADD_AUTHOR);
 			preparedStatement.setLong(1, newsId);
 			preparedStatement.setLong(2, authorId);
 			preparedStatement.executeUpdate();
 		}catch (SQLException e) {
 			throw new DAOException(e);
+		} finally {
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	}
 
 
 	@Override
 	public void addTag(Long newsId, Long tagId) throws DAOException {
-		
-		try(Connection connect = dataSource.getConnection(); 
-				PreparedStatement preparedStatement = connect.prepareStatement(ADD_TAG)){
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
+		try{
+			connect = dataSource.getConnection(); 
+			preparedStatement = connect.prepareStatement(ADD_TAG);
 			preparedStatement.setLong(1, newsId);
 			preparedStatement.setLong(2, tagId);
 			preparedStatement.executeUpdate();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DAOException(e);
+		} finally {
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 	}
 
@@ -230,10 +289,13 @@ private DataSource dataSource;
 	public List<News> searchTag(Tag tag) throws DAOException {
 		List<News> list = new ArrayList<>();
 		ResultSet rs = null;
+		Connection connect = null;
+		PreparedStatement preparedStatement = null;
 		News news = null;
 		
-		try(Connection connect = dataSource.getConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(SEARCH_TAG)){
+		try{
+			connect = dataSource.getConnection();
+			preparedStatement = connect.prepareStatement(SEARCH_TAG);
 			preparedStatement.setLong(1, tag.getTagId());
 			rs = preparedStatement.executeQuery();
 			while(rs.next()){
@@ -245,8 +307,12 @@ private DataSource dataSource;
 				news.setPublishDate(rs.getDate(5));
 				list.add(news);
 			}
-		}catch(SQLException e) {
+		} catch(SQLException e) {
 			throw new DAOException(e);
+		} finally {
+			closeResultSet(rs);
+			closeConnection(connect);
+			closeStatement(preparedStatement);
 		}
 		return list;
 	}

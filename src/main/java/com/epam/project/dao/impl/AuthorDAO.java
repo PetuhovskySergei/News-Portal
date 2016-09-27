@@ -5,106 +5,138 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import com.epam.project.dao.IAuthorDAO;
+import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.Author;
 
 public class AuthorDAO implements IAuthorDAO{
 	
 	private DataSource dataSource;
 	
-	private final String SHOW_AUTHOR = "SELECT author_id, author_name FROM author "
+	private final static String LIST_AUTHOR = "SELECT author_id, author_name"
+										+ "FROM comment";
+	
+	private final static String SHOW_AUTHOR = "SELECT author_id, author_name FROM author "
 										+ "WHERE author_id = ?";
 	
-	private final String INSERT_AUTHOR = "INSERT INTO author "
+	private final static String INSERT_AUTHOR = "INSERT INTO author "
 										+ "VALUES(default, ?)";
 	
-	private final String DELETE_AUTHOR = "DELETE FROM author "
+	private final static String DELETE_AUTHOR = "DELETE FROM author "
 										+ "WHERE author_id = ?";
 	
-	private final String UPDATE_AUTHOR = "UPDATE author "
+	private final static String UPDATE_AUTHOR = "UPDATE author "
 										+ "SET author_name = ? "
 										+ "WHERE author_id = ?";
 	
-	private final String AUTHOR_ID = "author_id";
+	private final static String AUTHOR_ID = "author_id";
 
 	
-	public Author showAuthor(long authorId) throws SQLException {
+	public Author show(long authorId) throws DAOException {
 		 
 		ResultSet rs = null;
-		Author author = new Author();		
-			try{
+		Author author = null;		
+			try(
 				Connection connect = dataSource.getConnection();	
-				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_AUTHOR);
-				
-				preparedStatement.setLong(1, authorId);
-				rs = preparedStatement.executeQuery();			
-					if(rs.next()){
+				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_AUTHOR)){			
+						preparedStatement.setLong(1, authorId);
+						rs = preparedStatement.executeQuery();			
+					if(rs.next()){ 
+						author = new Author();
 						author.setAuthorId(rs.getLong("AUTHOR_ID"));
 						author.setAuthorName(rs.getString("AUTHOR_NAME"));
 					}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e); 
+			} finally {
+				close(rs);
 			}
 			return author;
 	}
 	
 	
-	public long insertAuthor(Author author) throws SQLException{	 
-		try{
+	public long insert(Author author) throws DAOException{	 
+		ResultSet rs = null;
+		long authorId = 0;
+		try(
 		Connection connect = dataSource.getConnection();
 		PreparedStatement preparedStatement = connect.prepareStatement(INSERT_AUTHOR, Statement.RETURN_GENERATED_KEYS);
-		Statement statement = connect.createStatement();
+		Statement statement = connect.createStatement()){
 		
 	          preparedStatement.setString(1, author.getAuthorName());
 	          preparedStatement.executeUpdate();
 	          
-	          ResultSet rs = preparedStatement.getGeneratedKeys();
+	          rs = preparedStatement.getGeneratedKeys();
 	          if (rs.next())
-	        	  return rs.getLong(1);
+	        	  authorId = rs.getLong(1);
 		} catch(SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e);
+		} finally {
+			close(rs);
 		}
-	          return -1;
+	          return authorId;
 	}
 	
 	
-	public void deleteAuthor(Long authorId) throws SQLException {
+	public List<Author> list() throws DAOException {
+		 Author author = null;
+		 List<Author> result = new ArrayList<Author>();
+		 try(
+		 Connection connect = dataSource.getConnection();	
+		 Statement statement = connect.createStatement();
+		 ResultSet rs = statement.executeQuery(LIST_AUTHOR)){
+		 	while(rs.next()){
+		 		author = new Author();
+		 		author.setAuthorId(rs.getLong("AUTHOR_ID"));
+		 		author.setAuthorName(rs.getString("AUTHOR_NAME"));
+		 			result.add(author);
+		 					}
+		}catch(SQLException e){
+			throw new DAOException(e);
+		}
+		return result;
+	}
 
-		try{
+
+	public void delete(Long authorId) throws DAOException {
+
+		try(
 		Connection connect = dataSource.getConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(DELETE_AUTHOR);
+				PreparedStatement preparedStatement = connect.prepareStatement(DELETE_AUTHOR)){
 				preparedStatement.setLong(1, authorId);
 				preparedStatement.executeUpdate();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e);
 		}	
 	}
 	
 	
-	public void updateAuthor(Author author) throws SQLException{	 
-		try{
+	public void update(Author author) throws DAOException{	 
+		try(
 		Connection connect = dataSource.getConnection();	
-		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_AUTHOR); 
+		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_AUTHOR)){ 
 		
 		 	  preparedStatement.setString(1, author.getAuthorName());
 	          preparedStatement.setLong(2, author.getAuthorId());
 	          preparedStatement.executeUpdate();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new DAOException(e);
 		}
 	}
 	
 	
-	private void close(ResultSet rs) throws SQLException{
+	private void close(ResultSet rs) throws DAOException{
 		
 		if(rs != null){
 			try {
 				rs.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e);
 			}
 		}
 	}

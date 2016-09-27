@@ -26,7 +26,7 @@ public class AddAuthorTest {
 	             new ClassPathXmlApplicationContext("spring/beansXML.xml");
 
 	      AuthorDAO dao = (AuthorDAO) context.getBean("authorDAO");
-	      dao.insertAuthor(author);
+	      dao.insert(author);
 		}catch(Exception e){
 			logger.error(e);
 		}

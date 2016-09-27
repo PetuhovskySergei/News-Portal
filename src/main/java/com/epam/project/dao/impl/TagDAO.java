@@ -11,122 +11,129 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.epam.project.dao.ITagDAO;
+import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.Tag;
 
 public class TagDAO implements ITagDAO{
 	
 private DataSource dataSource;
 	
-	private final String LIST_TAG = "SELECT tag_id, tag_name "
+	private final static String LIST_TAG = "SELECT tag_id, tag_name "
 										+ "FROM tag";
 	
-	private final String SHOW_TAG = "SELECT tag_id, tag_name "
+	private final static String SHOW_TAG = "SELECT tag_id, tag_name "
 										+ "FROM tag"
 										+ "WHERE tag_id = ?";
 	
-	private final String INSERT_TAG = "INSERT INTO tag"
+	private final static String INSERT_TAG = "INSERT INTO tag"
 										+ "VALUES(default, ?)";
 	
-	private final String DELETE_TAG = "DELETE FROM tag"
+	private final static String DELETE_TAG = "DELETE FROM tag"
 										+ "WHERE tag_id = ?";
 	
-	private final String UPDATE_TAG = "UPDATE tag"
+	private final static String UPDATE_TAG = "UPDATE tag"
 										+ "SET tag_name = ?"
 										+ "WHERE tag_id = ?";
 	
-	public List<Tag> listTag() throws SQLException { 
+	public List<Tag> list() throws DAOException {
+		 Tag tag = null; 
 		 List<Tag> result = new ArrayList<Tag>();
-		 try{
+		 try(
 		 Connection connect = dataSource.getConnection();	
 		 Statement statement = connect.createStatement();
-		 ResultSet rs = statement.executeQuery(LIST_TAG);
+		 ResultSet rs = statement.executeQuery(LIST_TAG)){
 		 	while(rs.next()){
-		 		Tag tag = new Tag();
+		 		tag = new Tag();
 		 		tag.setTagId(rs.getLong("TAG_ID"));
 		 		tag.setTagName(rs.getString("TAG_NAME"));
 		 			result.add(tag);
 		 					}
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return result;
 	}
 	
 	
-	public Tag showTag(long tagId) throws SQLException {
+	public Tag show(long tagId) throws DAOException {
 		 
 		ResultSet rs = null;
-		Tag tag = new Tag();		
-			try{
+		Tag tag = null;		
+			try(
 				Connection connect = dataSource.getConnection();	
-				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_TAG);
+				PreparedStatement  preparedStatement = connect.prepareStatement(SHOW_TAG)){
 				
 				preparedStatement.setLong(1, tagId);
 				rs = preparedStatement.executeQuery();			
 					if(rs.next()){
+						tag = new Tag();
 						tag.setTagId(rs.getLong("TAG_ID"));
 						tag.setTagName(rs.getString("TAG_NAME"));
 					}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				throw new DAOException(e);
+			} finally {
+				close(rs);
 			}
 			return tag;
 	}
 	
 	
-	public long insertTag(Tag tag) throws SQLException{	 
-		try{
+	public long insert(Tag tag) throws DAOException{	 
+		ResultSet rs = null;
+		long tagId = 0;
+		try(
 		Connection connect = dataSource.getConnection();
 		PreparedStatement preparedStatement = connect.prepareStatement(INSERT_TAG, Statement.RETURN_GENERATED_KEYS);
-		Statement statement = connect.createStatement();
+		Statement statement = connect.createStatement()){
 		
 	          preparedStatement.setString(1, tag.getTagName());
 	          preparedStatement.executeUpdate();
 	          
-	          ResultSet rs = preparedStatement.getGeneratedKeys();
+	          rs = preparedStatement.getGeneratedKeys();
 	          if (rs.next())
-	        	  return rs.getLong(1);
+	        	  tagId = rs.getLong(1);
 		} catch(SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e);
 		}
-	          return -1;
+	          return tagId;
 	}
 	
 	
-	public void deleteTag(Long tagId) throws SQLException {
+	public void delete(Long tagId) throws DAOException {
 
-		try{
+		try(
 		Connection connect = dataSource.getConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(DELETE_TAG);
+				PreparedStatement preparedStatement = connect.prepareStatement(DELETE_TAG)){
 				preparedStatement.setLong(1, tagId);
 				preparedStatement.executeUpdate();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new DAOException(e);
 		}	
 	}
 	
 	
-	public void updateTag(Tag tag) throws SQLException{	 
-		try{
+	public void update(Tag tag) throws DAOException{	 
+		try(
 		Connection connect = dataSource.getConnection();	
-		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_TAG); 
+		PreparedStatement  preparedStatement = connect.prepareStatement(UPDATE_TAG)){ 
 		
 		 	  preparedStatement.setString(1, tag.getTagName());
 	          preparedStatement.setLong(2, tag.getTagId());
 	          preparedStatement.executeUpdate();
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new DAOException(e);
 		}
 	}
 	
 	
-	private void close(ResultSet rs) throws SQLException{
+	private void close(ResultSet rs) throws DAOException{
 			
 			if(rs != null){
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					throw new DAOException(e);
 				}
 			}
 		}

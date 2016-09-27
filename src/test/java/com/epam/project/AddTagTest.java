@@ -24,7 +24,7 @@ public class AddTagTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/beansXML.xml");
 		      TagDAO dao = (TagDAO) context.getBean("tagDAO");
-		      dao.insertTag(tag);
+		      dao.insert(tag);
 			}catch(Exception e){
 				logger.error(e);
 			}

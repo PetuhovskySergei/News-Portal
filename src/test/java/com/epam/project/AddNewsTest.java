@@ -25,7 +25,7 @@ public class AddNewsTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/beansXML.xml");
 		      NewsDAO dao = (NewsDAO) context.getBean("newsDAO");
-		      dao.insertNews(news);
+		      dao.insert(news);
 			}catch(Exception e){
 				logger.error(e);
 			}
@@ -41,7 +41,7 @@ public class AddNewsTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/BeansXML.xml");
 		      NewsDAO dao = (NewsDAO) context.getBean("newsDAO");
-		      dao.insertNews(news);
+		      dao.insert(news);
 			}catch(Exception e){
 				logger.error(e);
 			}
@@ -57,7 +57,7 @@ public class AddNewsTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/BeansXML.xml");
 		      NewsDAO dao = (NewsDAO) context.getBean("newsDAO");
-		      dao.insertNews(news);
+		      dao.insert(news);
 			}catch(Exception e){
 				logger.error(e);
 			}
@@ -73,7 +73,7 @@ public class AddNewsTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/BeansXML.xml");
 		      NewsDAO dao = (NewsDAO) context.getBean("newsDAO");
-		      dao.insertNews(news);
+		      dao.insert(news);
 			}catch(Exception e){
 				logger.error(e);
 			}

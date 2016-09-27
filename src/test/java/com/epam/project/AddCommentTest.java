@@ -27,7 +27,7 @@ public class AddCommentTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/beansXML.xml");
 		      CommentDAO dao = (CommentDAO) context.getBean("commentDAO");
-		      dao.insertComment(comment);
+		      dao.insert(comment);
 			}catch(Exception e){
 				logger.error(e);
 			}
@@ -43,7 +43,7 @@ public class AddCommentTest {
 			ApplicationContext context = 
 		             new ClassPathXmlApplicationContext("/spring/BeansXML.xml");
 		      CommentDAO dao = (CommentDAO) context.getBean("commentDAO");
-		      dao.insertComment(comment);
+		      dao.insert(comment);
 			}catch(Exception e){
 				logger.error(e);
 			}

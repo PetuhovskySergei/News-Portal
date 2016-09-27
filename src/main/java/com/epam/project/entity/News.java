@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class News implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 		
 		private long newsId;
 		private String mainTitle;

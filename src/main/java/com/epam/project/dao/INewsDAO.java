@@ -1,21 +1,18 @@
 package com.epam.project.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.News;
+import com.epam.project.entity.Tag;
 
 
-public interface INewsDAO {
+public interface INewsDAO extends IGenericDAO<News>{
 	
-	public long insertNews(News news) throws SQLException;
+	public void addAuthor(Long authorId, Long newsId) throws DAOException;
 	
-	public News showNews(long newsId) throws SQLException;;
+	public void addTag(Long newsId, Long tagId) throws DAOException;
 	
-	public void updateNews(News news) throws SQLException;;
-	
-	public void deleteNews(Long newsId) throws SQLException;;
-	
-	public List<News> listNews() throws SQLException;
+	public List<News> searchTag(Tag tag) throws DAOException;
 }
 

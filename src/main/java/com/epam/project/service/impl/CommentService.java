@@ -9,12 +9,12 @@ import com.epam.project.service.ICommentService;
 import com.epam.project.service.exception.ServiceException;
 
 public class CommentService implements ICommentService {
-	
+
 	private CommentDAO commentDAO;
-	
+
 	@Override
 	public long insert(Comment comment) throws ServiceException {
-		
+
 		long id = 0;
 
 		if (comment == null) {
@@ -30,11 +30,11 @@ public class CommentService implements ICommentService {
 
 	@Override
 	public Comment show(Long id) throws ServiceException {
-		
+
 		Comment comment = null;
 		try {
 			comment = commentDAO.show(id);
-		} catch (DAOException e) {			
+		} catch (DAOException e) {
 			throw new ServiceException("Show was failed", e);
 		}
 		return comment;
@@ -42,7 +42,7 @@ public class CommentService implements ICommentService {
 
 	@Override
 	public void update(Comment comment) throws ServiceException {
-		
+
 		if (comment == null) {
 			throw new ServiceException("Comment is null");
 		}
@@ -56,18 +56,18 @@ public class CommentService implements ICommentService {
 
 	@Override
 	public void delete(Long id) throws ServiceException {
-		
+
 		try {
 			commentDAO.delete(id);
 		} catch (DAOException e) {
 			throw new ServiceException("Delete was failed", e);
 		}
-		
+
 	}
 
 	@Override
 	public List<Comment> list() throws ServiceException {
-		
+
 		List<Comment> list;
 		try {
 			list = commentDAO.list();

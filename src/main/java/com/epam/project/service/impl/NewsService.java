@@ -12,10 +12,10 @@ import com.epam.project.service.exception.ServiceException;
 public class NewsService implements INewsService {
 
 	private NewsDAO newsDAO;
-	
+
 	@Override
 	public long insert(News news) throws ServiceException {
-		
+
 		long id = 0;
 
 		if (news == null) {
@@ -31,11 +31,11 @@ public class NewsService implements INewsService {
 
 	@Override
 	public News show(Long id) throws ServiceException {
-		
+
 		News news = null;
 		try {
 			news = newsDAO.show(id);
-		} catch (DAOException e) {			
+		} catch (DAOException e) {
 			throw new ServiceException("Show was failed", e);
 		}
 		return news;
@@ -43,7 +43,7 @@ public class NewsService implements INewsService {
 
 	@Override
 	public void update(News news) throws ServiceException {
-		
+
 		if (news == null) {
 			throw new ServiceException("News is null");
 		}
@@ -57,7 +57,6 @@ public class NewsService implements INewsService {
 
 	@Override
 	public void delete(Long id) throws ServiceException {
-		
 
 		try {
 			newsDAO.delete(id);
@@ -68,7 +67,7 @@ public class NewsService implements INewsService {
 
 	@Override
 	public List<News> list() throws ServiceException {
-		
+
 		List<News> list;
 		try {
 			list = newsDAO.list();
@@ -98,9 +97,9 @@ public class NewsService implements INewsService {
 
 	@Override
 	public List<News> searchTag(Tag tag) throws ServiceException {
-		
+
 		List<News> newsList;
-		if(tag == null){
+		if (tag == null) {
 			throw new ServiceException("Tag is null.");
 		}
 		try {

@@ -9,12 +9,12 @@ import com.epam.project.service.ITagService;
 import com.epam.project.service.exception.ServiceException;
 
 public class TagService implements ITagService {
-	
+
 	private TagDAO tagDAO;
 
 	@Override
 	public long insert(Tag tag) throws ServiceException {
-		
+
 		long id = 0;
 
 		if (tag == null) {
@@ -30,11 +30,11 @@ public class TagService implements ITagService {
 
 	@Override
 	public Tag show(Long id) throws ServiceException {
-		
+
 		Tag tag = null;
 		try {
 			tag = tagDAO.show(id);
-		} catch (DAOException e) {			
+		} catch (DAOException e) {
 			throw new ServiceException("Show was failed", e);
 		}
 		return tag;
@@ -42,7 +42,7 @@ public class TagService implements ITagService {
 
 	@Override
 	public void update(Tag tag) throws ServiceException {
-		
+
 		if (tag == null) {
 			throw new ServiceException("Tag is null");
 		}
@@ -65,7 +65,7 @@ public class TagService implements ITagService {
 
 	@Override
 	public List<Tag> list() throws ServiceException {
-		
+
 		List<Tag> list;
 		try {
 			list = tagDAO.list();

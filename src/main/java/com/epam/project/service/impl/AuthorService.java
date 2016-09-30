@@ -9,12 +9,12 @@ import com.epam.project.service.IAuthorService;
 import com.epam.project.service.exception.ServiceException;
 
 public class AuthorService implements IAuthorService {
-	
+
 	private AuthorDAO authorDAO;
 
 	@Override
 	public long insert(Author author) throws ServiceException {
-		
+
 		long id = 0;
 
 		if (author == null) {
@@ -31,11 +31,11 @@ public class AuthorService implements IAuthorService {
 
 	@Override
 	public Author show(Long id) throws ServiceException {
-		
+
 		Author author = null;
 		try {
 			author = authorDAO.show(id);
-		} catch (DAOException e) {			
+		} catch (DAOException e) {
 			throw new ServiceException("Show was failed", e);
 		}
 		return author;
@@ -43,7 +43,7 @@ public class AuthorService implements IAuthorService {
 
 	@Override
 	public void update(Author author) throws ServiceException {
-		
+
 		if (author == null) {
 			throw new ServiceException("Author is null");
 		}
@@ -57,18 +57,18 @@ public class AuthorService implements IAuthorService {
 
 	@Override
 	public void delete(Long id) throws ServiceException {
-		
+
 		try {
 			authorDAO.delete(id);
 		} catch (DAOException e) {
 			throw new ServiceException("Delete was failed", e);
 		}
-		
+
 	}
 
 	@Override
 	public List<Author> list() throws ServiceException {
-		
+
 		List<Author> list;
 		try {
 			list = authorDAO.list();

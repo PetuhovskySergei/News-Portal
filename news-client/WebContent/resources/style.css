@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+#wrapper {
+	margin: 0 auto;
+	background-color: rgb(120, 241, 238);
+	width: 1260px;
+	min-height: 1280px;
+}
+
+#header {
+	margin: 0 auto;
+	background-color: rgb(89, 160, 238);
+	width: 1260px;
+	min-height: 100px;
+}
+
+#newsportaltext{
+	float: left;
+	margin: 15px 0 0 100px;
+	font-size: 30pt;
+}
+
+#enru {
+	float: right;
+	margin: 65px -57px 0 0;
+	width: 50px;
+	height: 30px
+}
+
+#enruClient {
+	float: right;
+	margin: 50px 30px 0 0;
+	width: 50px;
+	height: 30px
+}
+
+#logout {
+	float: right;
+	margin: 20px 30px 0 0;
+}

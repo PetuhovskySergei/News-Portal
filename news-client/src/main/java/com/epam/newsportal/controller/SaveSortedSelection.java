@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 		 */
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			String authorId = request.getParameter("listAuthor");
+			String tagId = request.getParameter("listTag");
 
 			response.sendRedirect("/news-client/sorted");
 			 

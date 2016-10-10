@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>	
+	<Author author_id="1" author_name="Harry Potter"/>
+	<Author author_id="2" author_name="Cobe Braynt"/>
+	<Author author_id="3" author_name="Michael Jackson"/>
+	
+	
+	<Tag tag_id="1" tag_name="Magic"/>
+	<Tag tag_id="2" tag_name="Basketball"/>
+	<Tag tag_id="3" tag_name="Music"/>
+	
+	
+	<News news_id="1" main_title="Magic outside of Hogwarts" short_title="Magic outside of Hogwarts" text="full1" publish_date="22-SEP-13"/>
+	<News news_id="2" main_title="Like a Cobe" short_title="Double goal" text="full2" publish_date="22-SEP-13"/>
+	<News news_id="3" main_title="King of POP" short_title="MJ is story" text="full3" publish_date="22-SEP-13"/>
+
+	
+	<Comments comment_id="1" news_id="1" comment_text="text1" comment_date="23-SEP-13"/>
+	<Comments comment_id="2" news_id="2" comment_text="text2" comment_date="25-SEP-13"/>
+	<Comments comment_id="3" news_id="2" comment_text="text3" comment_date="26-SEP-13"/>
+	
+	<News_Author news_id="1" author_id="1"/>
+	<News_Author news_id="2" author_id="2"/>
+	<News_Author news_id="3" author_id="3"/>
+	
+	
+	<News_Tag news_id="1" tag_id="1"/>
+	<News_Tag news_id="2" tag_id="2"/>
+	<News_Tag news_id="2" tag_id="3"/>
+</dataset>

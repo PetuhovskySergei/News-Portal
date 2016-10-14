@@ -11,11 +11,13 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.epam.project.dao.ITagDAO;
 import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.Tag;
 
+@Repository
 public class TagDAO implements ITagDAO {
 
 	@Autowired

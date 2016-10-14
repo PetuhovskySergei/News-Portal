@@ -11,12 +11,14 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.epam.project.dao.INewsDAO;
 import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.News;
 import com.epam.project.entity.Tag;
 
+@Repository
 public class NewsDAO implements INewsDAO {
 
 	@Autowired

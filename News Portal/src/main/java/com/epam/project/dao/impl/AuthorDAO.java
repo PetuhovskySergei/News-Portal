@@ -11,11 +11,13 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.epam.project.dao.IAuthorDAO;
 import com.epam.project.dao.exception.DAOException;
 import com.epam.project.entity.Author;
 
+@Repository
 public class AuthorDAO implements IAuthorDAO {
 
 	@Autowired

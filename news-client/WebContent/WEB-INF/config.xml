@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-	<db-config>
-		<url>jdbc:oracle:thin:@localhost:1521:xe</url>
-		<user>NEWS_PORTAL</user>
-		<password>1234</password>
-	</db-config>
-</config>

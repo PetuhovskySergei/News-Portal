@@ -1,0 +1,214 @@
+@CHARSET "UTF-8";
+
+#wrapper {
+	margin: 0 auto;
+	background-color: rgb(120, 241, 238);
+	width: 75%;
+	min-height: 100%;
+}
+
+#header {
+	margin: 0 auto;
+	background-color: rgb(89, 160, 238);
+	width: 100%;
+	min-height: 100px;
+}
+
+#newsportaltext {
+	float: left;
+	margin: 15px 0 0 100px;
+	font-size: 30pt;
+}
+
+#enru {
+	float: right;
+	margin: 65px -57px 0 0;
+	width: 50px;
+	height: 30px
+}
+
+#enruClient {
+	float: right;
+	margin: 50px 30px 0 0;
+	width: 50px;
+	height: 30px
+}
+
+#logout {
+	float: right;
+	margin: 20px 30px 0 0;
+}
+
+.filterForm {
+	
+	margin: 20px 0 0 25%;
+}
+
+#checkboxes1 {
+	
+}
+
+#checkboxes2 {
+	float: left;
+	margin: 0px;
+}
+
+.selectAuthor{
+	margin: 0 5px 0 0;
+	float: left;
+}
+
+.news-title {
+	width: 60%;
+	font-weight: bold;
+}
+
+.newslist-container {
+	margin: 30px 0 0 0;
+}
+
+.news-info {
+	margin-top: 90px;
+}
+
+.news-title {
+	width: 60%;
+	font-weight: bold;
+}
+
+.news-short-title {
+	clear: both;
+	padding: 20px 0 20px 0;
+}
+
+.view-news{
+	margin: 0 5% 0 0; 
+	float: right;
+	width: 7%;
+	text-align: right;
+}
+
+.pagination {
+	margin: 2% 0 0 0;
+	width: 100%;
+	height: 50px;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+}
+
+.user_filter_block{
+	margin: 0 0 0 140px;
+}
+
+.selectAuthor{
+	margin: 0 5px 0 0;
+	float: left;
+}
+
+.multiselectTags{
+	margin: 0 5px 0 0;
+	float: left;
+}
+
+.resetForm{
+	margin: 0 0 0 60.6%;
+}
+
+.news-info {
+	margin-top: 90px;
+}
+
+.news-title {
+	width: 60%;
+	font-weight: bold;
+}
+
+.news-author {
+	width: 25%;
+	float: left;
+}
+
+.news-date {
+	width: 10%;
+	float: right;
+	text-decoration: underline;
+}
+
+.news-short-text {
+	clear: both;
+	padding: 20px 0 20px 0;
+}
+
+.news-full-text{
+	clear: both;
+	padding: 20px 0 20px 0;
+}
+
+.news-tags {
+	float: right;
+	width: 50%;
+	text-align: right;
+	color: #808080;
+}
+
+.news-comments {
+	float: right;
+	width: 5%;
+	text-align: right;
+	color: #ff0000;
+}
+
+.back{
+	float: left;
+	width: 100%;
+	margin: 1% 0 1% 50%;
+	
+}
+
+.comments_block, .addComm {
+	width: 500px;
+}
+
+.comments_block span {
+	text-decoration: underline;
+}
+
+.comment {
+	margin: 0 0 15px 0;
+	background: #c6c9c6;
+	width: 500px;
+	position: relative;
+}
+
+.comment-text {
+	width: 450px;
+	padding: 10px 0 10px 0;
+	margin-bottom: 15px;
+	display: block;
+}
+
+.comments_block, .addComm {
+	width: 500px;
+}
+
+.commentTextarea {
+	width: 495px;
+	height: 70px;
+}
+
+.prev-next {
+	width: 100%;
+	height: 40px;
+	margin: 2% 0 0 0;
+}
+
+.previous {
+	display: block;
+	float: left;
+}
+
+.next {
+	display: block;
+	float: right;
+}
